@@ -1,7 +1,6 @@
 package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
-    val decrease = 1
 
     fun updateQuality() {
         for (item in items) {
@@ -24,48 +23,28 @@ class GildedRose(var items: Array<Item>) {
     }
 
     fun updateQualityPreSellIn(item: Item) {
-        if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.name != "Sulfuras, Hand of Ragnaros") {
-                changeQuality(item, -1)
-            }
+        when (item.name) {
+            "Aged Brie" -> changeQuality(item, 1)
+            "Backstage passes to a TAFKAL80ETC concert" -> backstagePassQualityPreSellIn(item)
+            else -> changeQuality(item, -1)
+        }
+    }
+
+    fun backstagePassQualityPreSellIn(item:Item){
+        if (item.sellIn <= 5) {
+            changeQuality(item, 3)
+        } else if (item.sellIn <= 10) {
+            changeQuality(item, 2)
         } else {
             changeQuality(item, 1)
-
-            if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-                if (item.sellIn <= 10) {
-                    changeQuality(item, 1)
-                }
-                if (item.sellIn <= 5) {
-                    changeQuality(item, 1)
-                }
-            }
-
         }
     }
 
     fun updateQualityPostSellIn(item: Item) {
-        if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            changeQuality(item, -1)
-        } else {
-            changeQuality(item, 1)
-            if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
-                if (item.sellIn <= 10) {
-                    changeQuality(item, 1)
-                }
-
-                if (item.sellIn <= 5) {
-                    changeQuality(item, 1)
-                }
-            }
-        }
-        if (item.name != "Aged Brie") {
-            if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-                changeQuality(item, -1)
-            } else {
-                item.quality = 0
-            }
-        } else {
-            changeQuality(item, 1)
+        when (item.name) {
+            "Aged Brie" -> changeQuality(item, 2)
+            "Backstage passes to a TAFKAL80ETC concert" -> item.quality = 0
+            else -> changeQuality(item, -2)
         }
     }
 

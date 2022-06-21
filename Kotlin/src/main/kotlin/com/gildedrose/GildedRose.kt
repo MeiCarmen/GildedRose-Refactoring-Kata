@@ -1,9 +1,13 @@
 package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
+    val decrease = 1
 
     fun updateQuality() {
         for (item in items) {
+            if (item.name == "Sulfuras, Hand of Ragnaros") {
+                break
+            }
             updateSellIn(item)
             // make separate update quality funcs for exceptions
             if (item.sellIn >= 0) {
@@ -11,13 +15,12 @@ class GildedRose(var items: Array<Item>) {
             } else {
                 updateQualityPostSellIn(item)
             }
+            checkQualityBounds(item)
         }
     }
 
     fun updateSellIn(item: Item) {
-        if (item.name != "Sulfuras, Hand of Ragnaros") {
-            item.sellIn = item.sellIn - 1
-        }
+        item.sellIn = item.sellIn - 1
     }
 
     fun updateQualityPreSellIn(item: Item) {
@@ -50,26 +53,18 @@ class GildedRose(var items: Array<Item>) {
 
     fun updateQualityPostSellIn(item: Item) {
         if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert") {
-            if (item.quality > 0) {
-                if (item.name != "Sulfuras, Hand of Ragnaros") {
-                    changeQuality(item, -1)
-                }
-            }
+            changeQuality(item, -1)
         } else {
             if (item.quality < 50) {
                 changeQuality(item, 1)
 
                 if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
                     if (item.sellIn <= 10) {
-                        if (item.quality < 50) {
-                            changeQuality(item, 1)
-                        }
+                        changeQuality(item, 1)
                     }
 
                     if (item.sellIn <= 5) {
-                        if (item.quality < 50) {
-                            changeQuality(item, 1)
-                        }
+                        changeQuality(item, 1)
                     }
                 }
             }
@@ -77,24 +72,26 @@ class GildedRose(var items: Array<Item>) {
 
         if (item.name != "Aged Brie") {
             if (item.name != "Backstage passes to a TAFKAL80ETC concert") {
-                if (item.quality > 0) {
-                    if (item.name != "Sulfuras, Hand of Ragnaros") {
-                        changeQuality(item, -1)
-                    }
-                }
+                changeQuality(item, -1)
             } else {
                 item.quality = 0
             }
         } else {
-            if (item.quality < 50) {
-                changeQuality(item, 1)
-            }
+            changeQuality(item, 1)
         }
 
     }
 
     fun changeQuality(item: Item, change: Int) {
         item.quality = item.quality + change
+    }
+
+    fun checkQualityBounds(item: Item) {
+        if (item.quality < 0) {
+            item.quality = 0
+        } else if (item.quality > 50) {
+            item.quality = 50
+        }
     }
 }
 

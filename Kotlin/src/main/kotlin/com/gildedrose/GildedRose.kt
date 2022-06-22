@@ -1,28 +1,34 @@
 package com.gildedrose
 
 class GildedRose(var items: Array<Item>) {
+    private val immutables = arrayOf("Sulfuras, Hand of Ragnaros")
+    private val minQuality = 0
+    private val maxQuality = 50
+
 
     fun updateQuality() {
         for (item in items) {
-            if (item.name == "Sulfuras, Hand of Ragnaros") {
+            if (immutables.contains(item.name)) {
                 break
             }
             updateSellIn(item)
-            // make separate update quality funcs for exceptions
-            if (item.sellIn >= 0) {
-                updateQualityPreSellIn(item)
-            } else {
-                updateQualityPostSellIn(item)
-            }
-
+            updateQuality(item)
         }
     }
 
-    fun updateSellIn(item: Item) {
+    private fun updateSellIn(item: Item) {
         item.sellIn = item.sellIn - 1
     }
 
-    fun updateQualityPreSellIn(item: Item) {
+    private fun updateQuality(item: Item) {
+        if (item.sellIn >= 0) {
+            updateQualityPreSellIn(item)
+        } else {
+            updateQualityPostSellIn(item)
+        }
+    }
+
+    private fun updateQualityPreSellIn(item: Item) {
         when (item.name) {
             "Aged Brie" -> changeQuality(item, 1)
             "Backstage passes to a TAFKAL80ETC concert" -> backstagePassQualityPreSellIn(item)
@@ -31,7 +37,7 @@ class GildedRose(var items: Array<Item>) {
         }
     }
 
-    fun backstagePassQualityPreSellIn(item:Item){
+    private fun backstagePassQualityPreSellIn(item: Item) {
         if (item.sellIn <= 5) {
             changeQuality(item, 3)
         } else if (item.sellIn <= 10) {
@@ -41,7 +47,7 @@ class GildedRose(var items: Array<Item>) {
         }
     }
 
-    fun updateQualityPostSellIn(item: Item) {
+    private fun updateQualityPostSellIn(item: Item) {
         when (item.name) {
             "Aged Brie" -> changeQuality(item, 2)
             "Backstage passes to a TAFKAL80ETC concert" -> item.quality = 0
@@ -50,16 +56,16 @@ class GildedRose(var items: Array<Item>) {
         }
     }
 
-    fun changeQuality(item: Item, change: Int) {
+    private fun changeQuality(item: Item, change: Int) {
         item.quality = item.quality + change
         checkQualityBounds(item)
     }
 
-    fun checkQualityBounds(item: Item) {
-        if (item.quality < 0) {
-            item.quality = 0
-        } else if (item.quality > 50) {
-            item.quality = 50
+    private fun checkQualityBounds(item: Item) {
+        if (item.quality < minQuality) {
+            item.quality = minQuality
+        } else if (item.quality > maxQuality) {
+            item.quality = maxQuality
         }
     }
 }

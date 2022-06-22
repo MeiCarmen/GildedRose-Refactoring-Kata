@@ -17,7 +17,7 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun updateSellIn(item: Item) {
-        item.sellIn = item.sellIn - 1
+        item.sellIn -= 1
     }
 
     private fun updateQuality(item: Item) {
@@ -57,7 +57,7 @@ class GildedRose(var items: Array<Item>) {
     }
 
     private fun changeQuality(item: Item, change: Int) {
-        item.quality = item.quality + change
+        item.quality += change
         checkQualityBounds(item)
     }
 

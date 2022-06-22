@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 internal class GildedRoseTest {
     ///////////////// New features Tests
-    /*
+
     @Test
     fun conjuredQualityDecreaseBeforeSellIn() {
         val items = arrayOf<Item>(Item("Conjured Mana Cake", 1, 6))
@@ -26,7 +26,7 @@ internal class GildedRoseTest {
         val app = GildedRose(items)
         app.updateQuality()
         assertEquals(0, app.items[0].quality)
-    }*/
+    }
 
     ///////////////// Old features Tests
     @Test

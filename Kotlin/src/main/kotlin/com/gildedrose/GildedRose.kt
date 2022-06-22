@@ -26,6 +26,7 @@ class GildedRose(var items: Array<Item>) {
         when (item.name) {
             "Aged Brie" -> changeQuality(item, 1)
             "Backstage passes to a TAFKAL80ETC concert" -> backstagePassQualityPreSellIn(item)
+            "Conjured Mana Cake" -> changeQuality(item, -2)
             else -> changeQuality(item, -1)
         }
     }
@@ -44,6 +45,7 @@ class GildedRose(var items: Array<Item>) {
         when (item.name) {
             "Aged Brie" -> changeQuality(item, 2)
             "Backstage passes to a TAFKAL80ETC concert" -> item.quality = 0
+            "Conjured Mana Cake" -> changeQuality(item, -4)
             else -> changeQuality(item, -2)
         }
     }
